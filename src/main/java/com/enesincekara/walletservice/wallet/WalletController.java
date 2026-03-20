@@ -1,6 +1,7 @@
 package com.enesincekara.walletservice.wallet;
 
 import com.enesincekara.walletservice.dto.CreateWalletRequest;
+import com.enesincekara.walletservice.dto.DepositMoneyRequest;
 import com.enesincekara.walletservice.dto.WalletResponse;
 import com.enesincekara.walletservice.dto.WithdrawMoneyRequest;
 import com.enesincekara.walletservice.service.WalletService;
@@ -24,7 +25,7 @@ public class WalletController {
         return new ResponseEntity<>(walletService.withdrawMoney(req), HttpStatus.OK);
     }
     @PatchMapping("/deposit")
-    public ResponseEntity<WalletResponse> depositMoney(@RequestBody WithdrawMoneyRequest req) {
+    public ResponseEntity<WalletResponse> depositMoney(@RequestBody DepositMoneyRequest req) {
         return new ResponseEntity<>(walletService.depositMoney(req), HttpStatus.OK);
     }
 

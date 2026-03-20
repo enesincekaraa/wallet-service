@@ -2,6 +2,7 @@ package com.enesincekara.walletservice.service;
 
 import com.enesincekara.walletservice.domain.Wallet;
 import com.enesincekara.walletservice.dto.CreateWalletRequest;
+import com.enesincekara.walletservice.dto.DepositMoneyRequest;
 import com.enesincekara.walletservice.dto.WalletResponse;
 import com.enesincekara.walletservice.dto.WithdrawMoneyRequest;
 import com.enesincekara.walletservice.mapper.WalletMapper;
@@ -26,7 +27,7 @@ public class WalletService {
                         (new Wallet(req.userId(), req.initialBalance())));
     }
     @Transactional
-    public WalletResponse depositMoney(WithdrawMoneyRequest req) {
+    public WalletResponse depositMoney(DepositMoneyRequest req) {
         Wallet wallet = walletRepository.findByIdWithLock(req.walletId()).orElseThrow(() -> new IllegalArgumentException("Wallet not found"));
         wallet.deposit(req.amount());
         return walletMapper.toResponse(walletRepository.save(wallet));

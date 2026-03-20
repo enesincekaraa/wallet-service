@@ -23,4 +23,10 @@ public class WalletController {
     public ResponseEntity<WalletResponse> withdrawMoney(@RequestBody WithdrawMoneyRequest req) {
         return new ResponseEntity<>(walletService.withdrawMoney(req), HttpStatus.OK);
     }
+    @PatchMapping("/deposit")
+    public ResponseEntity<WalletResponse> depositMoney(@RequestBody WithdrawMoneyRequest req) {
+        return new ResponseEntity<>(walletService.depositMoney(req), HttpStatus.OK);
+    }
+
+
 }

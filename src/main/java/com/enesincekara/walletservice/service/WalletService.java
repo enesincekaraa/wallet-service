@@ -26,9 +26,9 @@ public class WalletService {
                         (new Wallet(req.userId(), req.initialBalance())));
     }
     @Transactional
-    public WalletResponse depositMoney(UUID walletId, BigDecimal amount) {
-        Wallet wallet = walletRepository.findByIdWithLock(walletId).orElseThrow(() -> new IllegalArgumentException("Wallet not found"));
-        wallet.deposit(amount);
+    public WalletResponse depositMoney(WithdrawMoneyRequest req) {
+        Wallet wallet = walletRepository.findByIdWithLock(req.walletId()).orElseThrow(() -> new IllegalArgumentException("Wallet not found"));
+        wallet.deposit(req.amount());
         return walletMapper.toResponse(walletRepository.save(wallet));
     }
 

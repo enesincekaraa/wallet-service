@@ -1,6 +1,9 @@
 package com.enesincekara.walletservice.service;
 
 import com.enesincekara.walletservice.domain.Wallet;
+import com.enesincekara.walletservice.dto.CreateWalletRequest;
+import com.enesincekara.walletservice.dto.WalletResponse;
+import com.enesincekara.walletservice.mapper.WalletMapper;
 import com.enesincekara.walletservice.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,16 +16,19 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class WalletService {
     private final WalletRepository walletRepository;
+    private final WalletMapper walletMapper;
 
     @Transactional
-    public Wallet createWallet(UUID userId, BigDecimal initialBalance) {
-        return walletRepository.save(new Wallet(userId, initialBalance));
+    public WalletResponse createWallet(CreateWalletRequest req) {
+        return walletMapper.toResponse
+                (walletRepository.save
+                        (new Wallet(req.userId(), req.initialBalance())));
     }
     @Transactional
-    public Wallet depositMoney(UUID walletId, BigDecimal amount) {
+    public WalletResponse depositMoney(UUID walletId, BigDecimal amount) {
         Wallet wallet = walletRepository.findById(walletId).orElseThrow(() -> new IllegalArgumentException("Wallet not found"));
         wallet.deposit(amount);
-        return walletRepository.save(wallet);
+        return walletMapper.toResponse(walletRepository.save(wallet));
     }
 
 

@@ -1,12 +1,12 @@
 package com.enesincekara.walletservice.wallet;
 
-import com.enesincekara.walletservice.domain.Wallet;
+import com.enesincekara.walletservice.dto.CreateWalletRequest;
+import com.enesincekara.walletservice.dto.WalletResponse;
 import com.enesincekara.walletservice.service.WalletService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -15,7 +15,7 @@ public class WalletController {
     private final WalletService walletService;
 
     @PostMapping
-    public void save(@RequestParam("userId") UUID userId, @RequestParam("initialBalance") BigDecimal initialBalance) {
-        walletService.createWallet(userId, initialBalance);
+    public ResponseEntity<WalletResponse> save(@RequestBody CreateWalletRequest req) {
+        return new ResponseEntity<>(walletService.createWallet(req), HttpStatus.CREATED);
     }
 }

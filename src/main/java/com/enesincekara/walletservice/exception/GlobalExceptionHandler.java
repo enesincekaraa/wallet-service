@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(IllegalStateException.class)
+    @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorDetails> handleException(IllegalArgumentException ex) {
         ErrorDetails error = new ErrorDetails(
                 java.time.LocalDateTime.now(),

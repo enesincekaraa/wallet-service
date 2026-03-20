@@ -3,6 +3,7 @@ package com.enesincekara.walletservice.service;
 import com.enesincekara.walletservice.domain.Wallet;
 import com.enesincekara.walletservice.dto.CreateWalletRequest;
 import com.enesincekara.walletservice.dto.WalletResponse;
+import com.enesincekara.walletservice.dto.WithdrawMoneyRequest;
 import com.enesincekara.walletservice.mapper.WalletMapper;
 import com.enesincekara.walletservice.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,15 @@ public class WalletService {
     }
     @Transactional
     public WalletResponse depositMoney(UUID walletId, BigDecimal amount) {
-        Wallet wallet = walletRepository.findById(walletId).orElseThrow(() -> new IllegalArgumentException("Wallet not found"));
+        Wallet wallet = walletRepository.findByIdWithLock(walletId).orElseThrow(() -> new IllegalArgumentException("Wallet not found"));
         wallet.deposit(amount);
+        return walletMapper.toResponse(walletRepository.save(wallet));
+    }
+
+    @Transactional
+    public WalletResponse withdrawMoney(WithdrawMoneyRequest req) {
+        Wallet wallet = walletRepository.findByIdWithLock(req.walletId()).orElseThrow(() -> new IllegalArgumentException("Wallet not found"));
+        wallet.withdraw(req.amount());
         return walletMapper.toResponse(walletRepository.save(wallet));
     }
 

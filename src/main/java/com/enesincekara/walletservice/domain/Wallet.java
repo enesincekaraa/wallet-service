@@ -36,6 +36,9 @@ public class Wallet {
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Amount cannot be negative");
         }
+        if (this.balance.compareTo(amount) < 0) {
+            throw new IllegalArgumentException("Insufficient balance");
+        }
         this.balance = this.balance.subtract(amount);
     }
     public UUID getId() {

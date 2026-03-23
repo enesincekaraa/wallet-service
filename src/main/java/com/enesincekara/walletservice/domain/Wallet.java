@@ -1,15 +1,17 @@
 package com.enesincekara.walletservice.domain;
 
+import com.enesincekara.walletservice.dto.WalletUpdateEvent;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
 @Table(name = "wallets")
-public class Wallet {
+public class Wallet extends AbstractAggregateRoot<Wallet> {
     @Id
     private UUID id;
     private UUID userId;
@@ -31,6 +33,7 @@ public class Wallet {
             throw new IllegalArgumentException("Amount cannot be negative");
         }
         this.balance = this.balance.add(amount);
+        registerEvent(new WalletUpdateEvent(this.id,this.userId,this.balance,"DEPOSIT"));
     }
     public void withdraw(BigDecimal amount) {
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
@@ -40,6 +43,8 @@ public class Wallet {
             throw new IllegalArgumentException("Insufficient balance");
         }
         this.balance = this.balance.subtract(amount);
+
+        registerEvent(new WalletUpdateEvent(this.id,this.userId,this.balance,"WITHDRAW"));
     }
     public UUID getId() {
         return id;

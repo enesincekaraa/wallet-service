@@ -1,4 +1,4 @@
-package com.enesincekara.walletservice.wallet;
+package com.enesincekara.walletservice.controller;
 
 import com.enesincekara.walletservice.dto.CreateWalletRequest;
 import com.enesincekara.walletservice.dto.DepositMoneyRequest;

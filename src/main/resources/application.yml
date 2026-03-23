@@ -26,3 +26,17 @@ spring:
               packages: com.enesincekara.walletservice.dto
 
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  observations:
+    key-values:
+      application: ${spring.application.name}
+
+
+
+
+
